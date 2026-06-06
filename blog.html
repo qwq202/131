@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>极简白 - 个人博客</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --white: #FFFFFF;
+            --off-white: #FAFAFA;
+            --light-gray: #F5F5F5;
+            --medium-gray: #CCCCCC;
+            --text-gray: #666666;
+            --dark-gray: #333333;
+            --black: #111111;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Lora', serif;
+            background-color: var(--white);
+            color: var(--dark-gray);
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.03);
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 60px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--black);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: var(--medium-gray);
+            font-weight: 400;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 50px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--black);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--black);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--light-gray) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 1s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 72px;
+            font-weight: 700;
+            color: var(--black);
+            margin-bottom: 30px;
+            letter-spacing: -2px;
+            line-height: 1.1;
+        }
+
+        .hero h1 span {
+            display: block;
+            font-weight: 400;
+            font-size: 48px;
+            color: var(--text-gray);
+            margin-top: 10px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-gray);
+            max-width: 500px;
+            margin: 0 auto 40px;
+            line-height: 1.9;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            color: var(--medium-gray);
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        .scroll-indicator .line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--medium-gray), transparent);
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 60px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            color: var(--black);
+            margin-bottom: 60px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--black);
+        }
+
+        /* Blog Grid */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 80px 60px;
+        }
+
+        .blog-card {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease;
+        }
+
+        .blog-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .blog-card:nth-child(2) {
+            transition-delay: 0.2s;
+        }
+
+        .blog-card:nth-child(3) {
+            transition-delay: 0.4s;
+        }
+
+        .blog-card:nth-child(4) {
+            transition-delay: 0.6s;
+        }
+
+        .blog-card-image {
+            width: 100%;
+            height: 350px;
+            background: var(--light-gray);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blog-card-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .blog-card:hover .blog-card-image::after {
+            opacity: 1;
+        }
+
+        .blog-card-meta {
+            font-size: 12px;
+            color: var(--medium-gray);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .blog-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--black);
+            margin-bottom: 20px;
+            line-height: 1.3;
+            transition: color 0.3s ease;
+        }
+
+        .blog-card:hover h3 {
+            color: var(--text-gray);
+        }
+
+        .blog-card p {
+            color: var(--text-gray);
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--black);
+            text-decoration: none;
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: gap 0.3s ease;
+        }
+
+        .read-more:hover {
+            gap: 20px;
+        }
+
+        .read-more .arrow {
+            width: 30px;
+            height: 1px;
+            background: var(--black);
+            transition: width 0.3s ease;
+        }
+
+        .read-more:hover .arrow {
+            width: 50px;
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 150px 60px;
+            background: var(--off-white);
+        }
+
+        .about-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 100px;
+            align-items: center;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 600px;
+            background: var(--light-gray);
+            position: relative;
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            right: -30px;
+            bottom: -30px;
+            border: 1px solid var(--medium-gray);
+            z-index: -1;
+        }
+
+        .about-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            color: var(--black);
+            margin-bottom: 40px;
+            line-height: 1.2;
+        }
+
+        .about-content p {
+            color: var(--text-gray);
+            font-size: 17px;
+            line-height: 2;
+            margin-bottom: 30px;
+        }
+
+        .signature {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-style: italic;
+            color: var(--black);
+            margin-top: 40px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 80px 60px;
+            background: var(--white);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--black);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--black);
+        }
+
+        .footer-copy {
+            color: var(--medium-gray);
+            font-size: 13px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .nav-inner {
+                padding: 0 40px;
+            }
+
+            .hero h1 {
+                font-size: 56px;
+            }
+
+            .hero h1 span {
+                font-size: 36px;
+            }
+
+            .blog-grid {
+                gap: 60px 40px;
+            }
+
+            .about-inner {
+                gap: 60px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-inner {
+                padding: 0 30px;
+                height: 70px;
+            }
+
+            .nav-links {
+                gap: 30px;
+            }
+
+            .hero {
+                padding: 0 30px;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            .hero h1 span {
+                font-size: 28px;
+            }
+
+            main {
+                padding: 80px 30px;
+            }
+
+            .blog-grid {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+
+            .about-section {
+                padding: 100px 30px;
+            }
+
+            .about-inner {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+
+            .about-image {
+                height: 400px;
+            }
+
+            footer {
+                padding: 60px 30px;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                gap: 30px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-inner {
+                padding: 0 20px;
+            }
+
+            .logo {
+                font-size: 22px;
+            }
+
+            .nav-links {
+                gap: 20px;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero h1 span {
+                font-size: 22px;
+            }
+
+            .hero p {
+                font-size: 15px;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+
+            .blog-card h3 {
+                font-size: 22px;
+            }
+
+            .about-content h2 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-inner">
+            <a href="#" class="logo">简<span>.</span></a>
+            <ul class="nav-links">
+                <li><a href="#home">首页</a></li>
+                <li><a href="#blog">文章</a></li>
+                <li><a href="#about">关于</a></li>
+                <li><a href="#contact">联系</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>
+                极简生活
+                <span>简单思考</span>
+            </h1>
+            <p>在纷繁复杂的世界中，寻找简单的美好。记录生活、思考与创作。</p>
+        </div>
+        <div class="scroll-indicator">
+            <span>向下滚动</span>
+            <div class="line"></div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <main id="blog">
+        <h2 class="section-title">最新文章</h2>
+        <div class="blog-grid">
+            <article class="blog-card">
+                <div class="blog-card-image"></div>
+                <div class="blog-card-meta">2024年3月15日 · 设计思考</div>
+                <h3>留白的艺术：如何用空间说话</h3>
+                <p>在设计中，留白不是浪费，而是给内容呼吸的空间。探讨如何通过合理的留白创造更优雅的视觉体验。</p>
+                <a href="#" class="read-more">
+                    阅读更多
+                    <span class="arrow"></span>
+                </a>
+            </article>
+
+            <article class="blog-card">
+                <div class="blog-card-image"></div>
+                <div class="blog-card-meta">2024年3月10日 · 生活随笔</div>
+                <h3>清晨的咖啡与一本好书</h3>
+                <p>分享那些让人感到平静的日常时刻，以及如何在忙碌中找到属于自己的宁静角落。</p>
+                <a href="#" class="read-more">
+                    阅读更多
+                    <span class="arrow"></span>
+                </a>
+            </article>
+
+            <article class="blog-card">
+                <div class="blog-card-image"></div>
+                <div class="blog-card-meta">2024年3月5日 · 技术分享</div>
+                <h3>极简主义在代码中的应用</h3>
+                <p>如何编写简洁、可维护的代码？从命名规范到架构设计，探讨极简思维在编程中的实践。</p>
+                <a href="#" class="read-more">
+                    阅读更多
+                    <span class="arrow"></span>
+                </a>
+            </article>
+
+            <article class="blog-card">
+                <div class="blog-card-image"></div>
+                <div class="blog-card-meta">2024年2月28日 · 旅行日记</div>
+                <h3>京都的白与灰</h3>
+                <p>记录在京都的所见所感，那些简约而富有禅意的建筑和庭园，如何启发了我对设计的理解。</p>
+                <a href="#" class="read-more">
+                    阅读更多
+                    <span class="arrow"></span>
+                </a>
+            </article>
+        </div>
+    </main>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="about-inner">
+            <div class="about-image"></div>
+            <div class="about-content">
+                <h2>关于我</h2>
+                <p>你好，我是一名热爱极简主义的设计师和写作者。我相信，简单的事物往往蕴含着最深刻的美。</p>
+                <p>这个博客是我记录思考、分享心得的空间。在这里，你会看到关于设计、生活、技术的各种思考，它们都围绕着一个核心主题——如何在复杂中寻找简单。</p>
+                <p>欢迎你来到这个安静的角落，希望我的文字能给你带来一些启发。</p>
+                <div class="signature">简</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-inner">
+            <div class="footer-logo">简.</div>
+            <ul class="footer-links">
+                <li><a href="#">Twitter</a></li>
+                <li><a href="#">GitHub</a></li>
+                <li><a href="#">Dribbble</a></li>
+                <li><a href="#">邮箱</a></li>
+            </ul>
+            <div class="footer-copy">© 2024 极简白. 保留所有权利.</div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Blog cards animation on scroll
+        const blogCards = document.querySelectorAll('.blog-card');
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        blogCards.forEach(card => {
+            observer.observe(card);
+        });
+
+        // Smooth scrolling for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
