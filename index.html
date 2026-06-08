@@ -14,6 +14,8 @@
             --text-gray: #666666;
             --dark-gray: #333333;
             --black: #111111;
+            --accent: #8B7355;
+            --accent-light: #A89279;
         }
 
         * {
@@ -32,6 +34,70 @@
             color: var(--dark-gray);
             line-height: 1.8;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--white);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .loading-content .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--black);
+            margin-bottom: 30px;
+            animation: fadeInOut 2s infinite;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .loading-bar {
+            width: 200px;
+            height: 2px;
+            background: var(--light-gray);
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--black);
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { left: -100%; }
+            100% { left: 100%; }
         }
 
         /* Navigation */
@@ -71,7 +137,7 @@
         }
 
         .logo span {
-            color: var(--medium-gray);
+            color: var(--accent);
             font-weight: 400;
         }
 
@@ -79,6 +145,7 @@
             display: flex;
             gap: 50px;
             list-style: none;
+            align-items: center;
         }
 
         .nav-links a {
@@ -110,6 +177,28 @@
             width: 100%;
         }
 
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-gray);
+            transition: color 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            color: var(--black);
+        }
+
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+        }
+
         /* Hero Section */
         .hero {
             height: 100vh;
@@ -138,21 +227,9 @@
         .hero-content {
             position: relative;
             z-index: 1;
-            animation: fadeInUp 1s ease;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .hero h1 {
+        .hero-content h1 {
             font-family: 'Playfair Display', serif;
             font-size: 72px;
             font-weight: 700;
@@ -160,9 +237,12 @@
             margin-bottom: 30px;
             letter-spacing: -2px;
             line-height: 1.1;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease forwards 0.5s;
         }
 
-        .hero h1 span {
+        .hero-content h1 span {
             display: block;
             font-weight: 400;
             font-size: 48px;
@@ -176,6 +256,16 @@
             max-width: 500px;
             margin: 0 auto 40px;
             line-height: 1.9;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease forwards 0.8s;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .scroll-indicator {
@@ -192,6 +282,8 @@
             letter-spacing: 3px;
             text-transform: uppercase;
             animation: bounce 2s infinite;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 1.1s, bounce 2s infinite 2s;
         }
 
         @keyframes bounce {
@@ -235,7 +327,7 @@
             left: 0;
             width: 60px;
             height: 2px;
-            background: var(--black);
+            background: var(--accent);
         }
 
         /* Blog Grid */
@@ -249,6 +341,7 @@
             opacity: 0;
             transform: translateY(40px);
             transition: all 0.8s ease;
+            cursor: pointer;
         }
 
         .blog-card.visible {
@@ -295,9 +388,29 @@
             opacity: 1;
         }
 
+        .blog-card-image .read-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--white);
+            color: var(--black);
+            padding: 15px 30px;
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: 1;
+        }
+
+        .blog-card:hover .blog-card-image .read-overlay {
+            opacity: 1;
+        }
+
         .blog-card-meta {
             font-size: 12px;
-            color: var(--medium-gray);
+            color: var(--accent);
             letter-spacing: 3px;
             text-transform: uppercase;
             margin-bottom: 15px;
@@ -314,7 +427,7 @@
         }
 
         .blog-card:hover h3 {
-            color: var(--text-gray);
+            color: var(--accent);
         }
 
         .blog-card p {
@@ -405,8 +518,101 @@
             font-family: 'Playfair Display', serif;
             font-size: 24px;
             font-style: italic;
-            color: var(--black);
+            color: var(--accent);
             margin-top: 40px;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 150px 60px;
+            background: var(--white);
+        }
+
+        .contact-inner {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-inner h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            color: var(--black);
+            margin-bottom: 20px;
+        }
+
+        .contact-inner p {
+            color: var(--text-gray);
+            font-size: 17px;
+            line-height: 2;
+            margin-bottom: 50px;
+        }
+
+        .contact-form {
+            display: grid;
+            gap: 30px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .form-group {
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-gray);
+            margin-bottom: 10px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px 0;
+            border: none;
+            border-bottom: 1px solid var(--medium-gray);
+            font-family: 'Lora', serif;
+            font-size: 16px;
+            color: var(--dark-gray);
+            background: transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-bottom-color: var(--black);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            display: inline-block;
+            padding: 18px 50px;
+            background: var(--black);
+            color: var(--white);
+            border: none;
+            font-family: 'Lora', serif;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
         }
 
         /* Footer */
@@ -431,6 +637,10 @@
             color: var(--black);
         }
 
+        .footer-logo span {
+            color: var(--accent);
+        }
+
         .footer-links {
             display: flex;
             gap: 40px;
@@ -453,17 +663,150 @@
             font-size: 13px;
         }
 
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 50px;
+            height: 50px;
+            background: var(--black);
+            color: var(--white);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 90;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .back-to-top svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--white);
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            transform: translateY(30px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 40px;
+            height: 40px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-gray);
+            transition: color 0.3s ease;
+            z-index: 1;
+        }
+
+        .modal-close:hover {
+            color: var(--black);
+        }
+
+        .modal-close svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 400px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .modal-body {
+            padding: 60px;
+        }
+
+        .modal-meta {
+            font-size: 12px;
+            color: var(--accent);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 600;
+            color: var(--black);
+            margin-bottom: 30px;
+            line-height: 1.3;
+        }
+
+        .modal-text {
+            color: var(--text-gray);
+            font-size: 17px;
+            line-height: 2;
+        }
+
+        .modal-text p {
+            margin-bottom: 20px;
+        }
+
         /* Responsive */
         @media (max-width: 1024px) {
             .nav-inner {
                 padding: 0 40px;
             }
 
-            .hero h1 {
+            .hero-content h1 {
                 font-size: 56px;
             }
 
-            .hero h1 span {
+            .hero-content h1 span {
                 font-size: 36px;
             }
 
@@ -490,11 +833,11 @@
                 padding: 0 30px;
             }
 
-            .hero h1 {
+            .hero-content h1 {
                 font-size: 42px;
             }
 
-            .hero h1 span {
+            .hero-content h1 span {
                 font-size: 28px;
             }
 
@@ -507,7 +850,8 @@
                 gap: 60px;
             }
 
-            .about-section {
+            .about-section,
+            .contact-section {
                 padding: 100px 30px;
             }
 
@@ -520,6 +864,10 @@
                 height: 400px;
             }
 
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
             footer {
                 padding: 60px 30px;
             }
@@ -528,6 +876,14 @@
                 flex-direction: column;
                 gap: 30px;
                 text-align: center;
+            }
+
+            .modal-body {
+                padding: 40px;
+            }
+
+            .modal-title {
+                font-size: 28px;
             }
         }
 
@@ -548,11 +904,11 @@
                 font-size: 12px;
             }
 
-            .hero h1 {
+            .hero-content h1 {
                 font-size: 32px;
             }
 
-            .hero h1 span {
+            .hero-content h1 span {
                 font-size: 22px;
             }
 
@@ -568,13 +924,34 @@
                 font-size: 22px;
             }
 
-            .about-content h2 {
+            .about-content h2,
+            .contact-inner h2 {
                 font-size: 32px;
+            }
+
+            .modal-image {
+                height: 250px;
+            }
+
+            .modal-body {
+                padding: 30px;
+            }
+
+            .modal-title {
+                font-size: 24px;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="logo">简.</div>
+            <div class="loading-bar"></div>
+        </div>
+    </div>
+
     <!-- Navigation -->
     <nav id="navbar">
         <div class="nav-inner">
@@ -584,6 +961,13 @@
                 <li><a href="#blog">文章</a></li>
                 <li><a href="#about">关于</a></li>
                 <li><a href="#contact">联系</a></li>
+                <li>
+                    <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                </li>
             </ul>
         </div>
     </nav>
@@ -607,8 +991,10 @@
     <main id="blog">
         <h2 class="section-title">最新文章</h2>
         <div class="blog-grid">
-            <article class="blog-card">
-                <div class="blog-card-image" style="background-image: url('images/hero_001.jpg')"></div>
+            <article class="blog-card" data-index="0">
+                <div class="blog-card-image" style="background-image: url('images/hero_001.jpg')">
+                    <div class="read-overlay">阅读全文</div>
+                </div>
                 <div class="blog-card-meta">2024年3月15日 · 设计思考</div>
                 <h3>留白的艺术：如何用空间说话</h3>
                 <p>在设计中，留白不是浪费，而是给内容呼吸的空间。探讨如何通过合理的留白创造更优雅的视觉体验。</p>
@@ -618,8 +1004,10 @@
                 </a>
             </article>
 
-            <article class="blog-card">
-                <div class="blog-card-image" style="background-image: url('images/coffee_001.jpg')"></div>
+            <article class="blog-card" data-index="1">
+                <div class="blog-card-image" style="background-image: url('images/coffee_001.jpg')">
+                    <div class="read-overlay">阅读全文</div>
+                </div>
                 <div class="blog-card-meta">2024年3月10日 · 生活随笔</div>
                 <h3>清晨的咖啡与一本好书</h3>
                 <p>分享那些让人感到平静的日常时刻，以及如何在忙碌中找到属于自己的宁静角落。</p>
@@ -629,8 +1017,10 @@
                 </a>
             </article>
 
-            <article class="blog-card">
-                <div class="blog-card-image" style="background-image: url('images/code_001.jpg')"></div>
+            <article class="blog-card" data-index="2">
+                <div class="blog-card-image" style="background-image: url('images/code_001.jpg')">
+                    <div class="read-overlay">阅读全文</div>
+                </div>
                 <div class="blog-card-meta">2024年3月5日 · 技术分享</div>
                 <h3>极简主义在代码中的应用</h3>
                 <p>如何编写简洁、可维护的代码？从命名规范到架构设计，探讨极简思维在编程中的实践。</p>
@@ -640,8 +1030,10 @@
                 </a>
             </article>
 
-            <article class="blog-card">
-                <div class="blog-card-image" style="background-image: url('images/kyoto_001.jpg')"></div>
+            <article class="blog-card" data-index="3">
+                <div class="blog-card-image" style="background-image: url('images/kyoto_001.jpg')">
+                    <div class="read-overlay">阅读全文</div>
+                </div>
                 <div class="blog-card-meta">2024年2月28日 · 旅行日记</div>
                 <h3>京都的白与灰</h3>
                 <p>记录在京都的所见所感，那些简约而富有禅意的建筑和庭园，如何启发了我对设计的理解。</p>
@@ -667,10 +1059,39 @@
         </div>
     </section>
 
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="contact-inner">
+            <h2>联系我</h2>
+            <p>如果你有任何想法或建议，欢迎与我分享。</p>
+            <form class="contact-form" id="contactForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>姓名</label>
+                        <input type="text" placeholder="你的姓名" required>
+                    </div>
+                    <div class="form-group">
+                        <label>邮箱</label>
+                        <input type="email" placeholder="你的邮箱" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>主题</label>
+                    <input type="text" placeholder="消息主题">
+                </div>
+                <div class="form-group">
+                    <label>内容</label>
+                    <textarea placeholder="你想说的话..." required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">发送消息</button>
+            </form>
+        </div>
+    </section>
+
     <!-- Footer -->
-    <footer id="contact">
+    <footer>
         <div class="footer-inner">
-            <div class="footer-logo">简.</div>
+            <div class="footer-logo">简<span>.</span></div>
             <ul class="footer-links">
                 <li><a href="#">Twitter</a></li>
                 <li><a href="#">GitHub</a></li>
@@ -681,7 +1102,90 @@
         </div>
     </footer>
 
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="回到顶部">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 15l-6-6-6 6"></path>
+        </svg>
+    </button>
+
+    <!-- Modal -->
+    <div class="modal" id="articleModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"></path>
+                </svg>
+            </button>
+            <div class="modal-image" id="modalImage"></div>
+            <div class="modal-body">
+                <div class="modal-meta" id="modalMeta"></div>
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <div class="modal-text" id="modalText"></div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Article Data
+        const articles = [
+            {
+                title: "留白的艺术：如何用空间说话",
+                meta: "2024年3月15日 · 设计思考",
+                image: "images/hero_001.jpg",
+                content: `<p>在设计的世界里，留白常常被误解为"空"或"浪费"。然而，真正的设计大师都深谙一个道理：留白不是设计的缺席，而是设计的语言。</p>
+                <p>当我们观察日本传统庭园时，会发现那些精心布置的砂石、苔藓和岩石之间，总是留有大量的空白。这些空白不是随意的，而是经过深思熟虑的安排。它们让观者的目光有处安放，让心灵有空间呼吸。</p>
+                <p>在平面设计中，留白同样扮演着至关重要的角色。它能够：</p>
+                <p>引导视线流动：通过合理的留白，设计师可以引导读者的视线按照预设的路径移动，从而更好地传达信息。</p>
+                <p>创造层次感：留白能够帮助建立视觉层次，让重要内容脱颖而出，次要内容退居幕后。</p>
+                <p>传达品质感：大量的留白往往与高端、精致联系在一起。它传递出一种自信：内容本身足够精彩，无需用繁复的装饰来吸引眼球。</p>
+                <p>提升可读性：适当的行间距、段落间距和页边距，能够让文字更加易读，减轻读者的视觉疲劳。</p>
+                <p>在实际应用中，留白需要平衡。太少会显得拥挤，太多又会显得空洞。关键在于理解内容的本质，找到最恰当的表达方式。</p>`
+            },
+            {
+                title: "清晨的咖啡与一本好书",
+                meta: "2024年3月10日 · 生活随笔",
+                image: "images/coffee_001.jpg",
+                content: `<p>清晨六点，城市还未完全苏醒。我坐在窗边，手中是一杯刚刚冲好的手冲咖啡，桌上摊开的是一本已经读了一半的书。</p>
+                <p>这是我一天中最珍视的时刻。没有手机的打扰，没有工作的压力，只有咖啡的香气和文字的陪伴。</p>
+                <p>在这个快节奏的时代，我们似乎已经忘记了如何慢下来。我们习惯了快速浏览、快速回复、快速消费。但真正的思考需要时间，真正的理解需要沉淀。</p>
+                <p>一杯咖啡的时间，大约二十分钟。这二十分钟，足够我读完一个章节，足够我思考一个问题，足够我与自己进行一场对话。</p>
+                <p>我发现，当我坚持这个习惯后，我的思维方式发生了变化。我变得更加耐心，更加善于倾听，更加懂得欣赏那些细微的美好。</p>
+                <p>生活中的美好，往往藏在那些看似平凡的时刻里。一杯咖啡、一本好书、一个安静的清晨——这些简单的元素，构成了我心中最奢侈的享受。</p>`
+            },
+            {
+                title: "极简主义在代码中的应用",
+                meta: "2024年3月5日 · 技术分享",
+                image: "images/code_001.jpg",
+                content: `<p>在软件开发的世界里，代码的简洁性往往与质量成正比。那些能够用最少的代码实现最多功能的程序员，通常是最优秀的。</p>
+                <p>极简主义在代码中的应用，体现在以下几个方面：</p>
+                <p>命名的艺术：好的变量名和函数名，能够让代码自解释。与其写注释来解释代码在做什么，不如让代码本身就能说明问题。</p>
+                <p>单一职责原则：每个函数只做一件事，每个类只负责一个功能。这样不仅让代码更容易理解，也更容易测试和维护。</p>
+                <p>避免过度设计：在满足需求的前提下，选择最简单的解决方案。不要为了"可能的未来需求"而增加复杂性。</p>
+                <p>代码复用：通过抽象和封装，避免重复代码。但要注意，复用应该是自然的，而不是强制的。</p>
+                <p>一致的代码风格：统一的代码风格能够降低认知负担，让团队成员更容易理解彼此的代码。</p>
+                <p>写代码就像写作，目标是清晰地表达思想。最好的代码，是那些读起来像散文一样流畅的代码。</p>`
+            },
+            {
+                title: "京都的白与灰",
+                meta: "2024年2月28日 · 旅行日记",
+                image: "images/kyoto_001.jpg",
+                content: `<p>京都，这座千年古都，用它独特的色彩语言诠释着日本美学的精髓——白与灰。</p>
+                <p>在龙安寺的枯山水庭园里，我第一次真正理解了什么是"少即是多"。十五块石头，分布在白色的砂石海洋中，无论从哪个角度观察，都无法同时看到所有石头。这种设计的精妙之处在于，它用最少的元素，创造了无限的想象空间。</p>
+                <p>京都的建筑，大多采用素雅的色调。白色的墙壁、灰色的屋顶、原木色的柱子——这些看似单调的色彩，在光影的变化中呈现出丰富的层次。</p>
+                <p>在岚山的竹林中，阳光透过竹叶的缝隙洒落，形成斑驳的光影。那一刻，我明白了为什么日本人如此珍视"间"的概念——正是那些空白和间隙，让美有了呼吸的空间。</p>
+                <p>京都教会我的，不仅仅是设计的技巧，更是一种生活的态度。在这个信息爆炸的时代，我们需要学会做减法，学会在纷繁中寻找简单，在喧嚣中保持宁静。</p>
+                <p>离开京都时，我带走了一块来自龙安寺的白色砂石。它现在放在我的书桌上，时刻提醒我：美，可以如此简单。</p>`
+            }
+        ];
+
+        // Loading Screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loadingScreen').classList.add('hidden');
+            }, 1500);
+        });
+
         // Navbar scroll effect
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
@@ -723,6 +1227,69 @@
                     });
                 }
             });
+        });
+
+        // Back to Top Button
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Modal
+        const modal = document.getElementById('articleModal');
+        const modalClose = document.getElementById('modalClose');
+
+        blogCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('.read-more')) {
+                    e.preventDefault();
+                }
+                const index = card.dataset.index;
+                const article = articles[index];
+
+                document.getElementById('modalImage').style.backgroundImage = `url(${article.image})`;
+                document.getElementById('modalMeta').textContent = article.meta;
+                document.getElementById('modalTitle').textContent = article.title;
+                document.getElementById('modalText').innerHTML = article.content;
+
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        modalClose.addEventListener('click', () => {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Contact Form
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('感谢你的留言！我会尽快回复。');
+            e.target.reset();
+        });
+
+        // Theme Toggle (placeholder)
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            alert('暗色模式即将推出，敬请期待！');
         });
     </script>
 </body>
